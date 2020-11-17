@@ -1,0 +1,24 @@
+  .mat-column-expense-head{
+    width: 12%;
+  }
+  .mat-column-product-name{
+    width: 8%;
+  }
+  .mat-column-unit{
+    width: 7%;
+  }
+  .mat-column-rate{
+    width: 7%;
+  }
+  .mat-column-responsible{
+    width: 11%;
+  }
+  .mat-column-id{
+    width: 11%;
+  }
+  .mat-column-status{
+    width: 7%;
+  }
+  .mat-column-amount{
+    width: 9%;
+  }

@@ -1,0 +1,94 @@
+<mat-card class="mat-medium-font app-page-title">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Finance</li>
+            <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+            <li class="breadcrumb-item active" aria-current="page"><i
+                    class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningMeal"
+                    class="navigation-link">Dining Meals</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i
+                    class="fas fa-square-full list_style_square"></i>Add Dining Meal</li>
+        </ol>
+    </nav>
+    <div class="">
+        <h5 class="font-material">Add Dining Meal</h5>
+    </div>
+</mat-card>
+<div class="card-body card-white-background">
+    <div class="col d-flex justify-content-center">
+        <form [formGroup]="diningMealForm" (ngSubmit)="onSubmit()" novalidate class="example-form">
+            <input matInput hidden formControlName="id">
+            <mat-form-field appearance="outline" *ngIf="commonMethod.showForInstituteAdmin()">
+                <mat-label>Select Campus</mat-label>
+                <select matNativeControl id="campusId" formControlName="campusId" class="input-full-width">
+                    <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                        {{item.campusName}}
+                    </option>
+                    <option [value]="0">
+                        For All
+                    </option>
+                </select>
+                <mat-error *ngIf="diningMealForm.get('campusId').hasError('required')">
+                    Campus name is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Meal Name</mat-label>
+                <input matInput placeholder="Meal Name" formControlName="mealName">
+                <mat-error *ngIf="diningMealForm.get('mealName').hasError('required')">
+                    Meal Name is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <mat-form-field class="input-full-width" appearance="outline">
+                                <mat-label>Meal Key</mat-label>
+                                <input matInput placeholder="Meal Key" id="maelKey" formControlName="mealKey">
+                                <mat-error *ngIf="diningMealForm.get('mealKey').hasError('required')">
+                                    Meal Key is <strong>required</strong>
+                                </mat-error>
+                                <mat-hint>Maximum three charecter</mat-hint>
+                                <mat-error *ngIf="diningMealForm.get('mealKey').hasError('isTaken')">
+                                    This Meal Key has already been <strong>taken</strong>. Please choose another one.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+                            <mat-form-field class="input-full-width" appearance="outline">
+                                <mat-label>Meal Sequence</mat-label>
+                                <select matNativeControl id="mealSequence" formControlName="mealSequence">
+                                    <option value="" disabled selected></option>
+                                    <option *ngFor="let item of lstMealSequence" [value]="item">
+                                        {{item}}
+                                    </option>
+                                </select>
+                                <mat-error *ngIf="diningMealForm.get('mealSequence').hasError('required')">
+                                    Meal Sequence name is<strong> required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Meal Size</mat-label>
+                <input matInput placeholder="Meal Size" formControlName="mealSize">
+                <mat-error *ngIf="diningMealForm.get('mealSize').hasError('required')">
+                    Meal Size is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="field-full-width" appearance="outline">
+                <mat-label>Meal Time</mat-label>
+                <input matInput type="time" placeholder="Meal Time" formControlName="mealTime" #time />
+                <mat-error *ngIf="diningMealForm.get('mealTime').touched && time.value == ''">
+                    Meal From Time is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+            <button type="button" routerLink="/finance/diningMeal" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+        </form>
+    </div>
+</div>

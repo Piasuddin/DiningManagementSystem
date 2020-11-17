@@ -1,0 +1,144 @@
+<div class="card-body">
+  <div class="page_header">
+    <div class="page_name_title app-page-title">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Finance</li>
+          <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+          <li class="breadcrumb-item active" aria-current="page"><i
+              class="fas fa-square-full list_style_square"></i>Dining Stock Manages</li>
+        </ol>
+      </nav>
+      <h5>Dining Stock Manages</h5>
+    </div>
+    <div class="page_action text-right">
+      <div class="btn-group">
+        <button type="button" class="btn green dropdown-toggle action_btn_ksa" data-toggle="dropdown"
+          data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+          <span class="text-uppercase">Action</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <button class="dropdown-item" type="button" routerLink='/finance/addDiningStockManage'>Add New</button>
+          <button class="dropdown-item" type="button">Print PDF</button>
+          <button class="dropdown-item" type="button">Print Excel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="table-search-form-div" (click)="closeSearchBox()">
+</div>
+<div class="mat-elevation-z8 mt-3">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="mealDate">
+      <th mat-header-cell *matHeaderCellDef class="text-center">
+        <i class="fas fa-sort-amount-down" (click)="sortTableData('0', this)"></i>
+        <i class="fas fa-sort-amount-up" (click)="sortTableData('0', this)"></i>Meal Date
+        <i class="fas fa-filter" (click)="showSearchBox('mealDateSearchBox')"></i>
+        <form role="search" id="mealDateSearchBox" method="get" class="table-search-form">
+          <mat-form-field class="example-form-field ">
+            <input matInput type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search By Meal Date">
+            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+      </th>
+      <td mat-cell *matCellDef="let row" class="text-center"> {{row?.mealDate | date: 'dd/MM/yyyy'}} - {{row?.mealDate | date: 'EEE'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="numberOfBoarder">
+      <th mat-header-cell *matHeaderCellDef class="text-center">
+        <i class="fas fa-sort-amount-down" (click)="sortTableData('1', this)"></i>
+        <i class="fas fa-sort-amount-up" (click)="sortTableData('1', this)"></i> Number Of Boarder
+        <i class="fas fa-filter" (click)="showSearchBox('numberOfBoarderSearchBox')"></i>
+        <form role="search" id="numberOfBoarderSearchBox" method="get" class="table-search-form">
+          <mat-form-field class="example-form-field ">
+            <input matInput type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search By Number Of Boarder">
+            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+      </th>
+      <td mat-cell *matCellDef="let row" class="text-center"> {{row?.numberOfStudent}} </td>
+    </ng-container>
+    <ng-container matColumnDef="takenMeal">
+      <th mat-header-cell *matHeaderCellDef class="text-center">
+        <i class="fas fa-sort-amount-down" (click)="sortTableData('2', this)"></i>
+        <i class="fas fa-sort-amount-up" (click)="sortTableData('2', this)"></i> Taken Meal
+        <i class="fas fa-filter" (click)="showSearchBox('takenMealSearchBox')"></i>
+        <form role="search" id="takenMealSearchBox" method="get" class="table-search-form">
+          <mat-form-field class="example-form-field ">
+            <input matInput type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search By Taken Meal">
+            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+        <ul class="ul-li-border att">
+          <li *ngFor="let item of diningMealManageTableData?.diningMeal">{{item.mealName}}</li>
+        </ul>
+      </th>
+      <td mat-cell *matCellDef="let row" class="text-center">
+        <ul class="row att">
+          <li *ngFor="let meal of row.takenMeal">{{meal.num}}</li>
+        </ul>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="statusName">
+      <th mat-header-cell *matHeaderCellDef class="text-center">
+        <i class="fas fa-sort-amount-down" (click)="sortTableData('3', this)"></i>
+        <i class="fas fa-sort-amount-up" (click)="sortTableData('3', this)"></i> Status
+        <i class="fas fa-filter" (click)="showSearchBox('statusSearchBox')"></i>
+        <div class="d-flex justify-content-end">
+          <form role="search" id="statusSearchBox" method="get" class="table-search-form">
+            <mat-form-field class="example-form-field">
+              <input matInput type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search By Status">
+              <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </form>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let row" layout-align="center center" class="text-center">
+        <mat-chip-list>
+          <mat-chip color="green" *ngIf="row.status == 1" selected>{{getStatus(row?.status)}}</mat-chip>
+          <mat-chip color="danger" *ngIf="row.status == 2" selected>{{getStatus(row?.status)}}</mat-chip>
+        </mat-chip-list>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Action">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
+      <td mat-cell *matCellDef="let row" [style.color]="" class="text-center">
+        <div class="btn-group">
+          <button type="button" class="btn green dropdown-toggle action_btn_ksa" data-toggle="dropdown"
+            data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+            <span class="text-uppercase">Action</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <button routerLink="/finance/donorDetails/{{row?.donorId}}" class="dropdown-item" type="button">
+              Details
+            </button>
+            <button routerLink="/finance/addDiningMealManage/{{row?.id}}" class="dropdown-item" type="button">
+              Edit 
+            </button>
+            <button *ngIf="row.status == commonEnum.Inactive" (click)="onRowAction(row.donorId, commonEnum.Active)" class="dropdown-item" type="button">
+              Activate
+            </button>
+            <button *ngIf="row.status == commonEnum.Active" (click)="onRowAction(row.donorId, commonEnum.Inactive)" class="dropdown-item" type="button">
+              Deactivate
+            </button>
+            <button (click)="onDelete(row.id)" class="dropdown-item" type="button">
+              Delete
+            </button>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+</div> -->

@@ -1,0 +1,66 @@
+.custom-group>.form-control {
+    height: auto;
+}
+.btn-custom-search{
+    color: white;
+}
+.dl-dd-data{
+    padding: 7px;
+}
+.hide-form{
+    display: none;
+}
+h3{
+    color: #232323;
+}
+.form-control {
+    margin: 0px!important;
+}
+.date-field-height{
+    max-height: 43px;
+}
+.nav-link {
+    padding: .5rem 4rem;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: white;
+    background-color: #02735E;
+    border-color: white;
+}
+.app-ml-2{
+    padding-left: 2rem;
+}
+.nav-tabs {
+    border-bottom: 1px solid #025951;
+}
+.nav-tabs a{
+    color: #025951;
+    background-color: #9ed6ac;
+}
+.custom-group>.form-control {
+    height: auto;
+}
+/* .btn-custom{
+    color: white;
+   background-color:  #02735E;
+} */
+.label-for-input{
+    background-image: linear-gradient(to right,#232323, #FFFFFF);
+    color: white;
+    padding: 7px;
+    padding-left: 10px;
+}
+.dl-dd-data{
+    padding: 7px;
+}
+.hide-form{
+    display: none;
+}
+#hr { 
+    background-color: #F25D07; 
+    height: 1px; 
+    width: 100%; 
+}
+h3{
+    color: #025951;
+}

@@ -1,0 +1,46 @@
+.student_action_title ul li {
+    width: 30% !important;
+}
+.meal-attendence-box{
+    max-width: 40px;
+    padding-left: 5px;
+}
+.att {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .att li {
+    float: left;
+  }
+  .att li {
+    display: block;
+    color: ba;
+    text-align: center;
+    text-decoration: none;
+  }
+  .ul-li-border li{
+    border: 1px solid #F78A09;
+  }
+
+ul {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+    flex-grow: 1;
+    text-align: center;
+}
+.grouping-text{
+  font-size: 12px;
+  
+}
+/* ul li a {
+    display: block;
+} */

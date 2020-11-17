@@ -1,0 +1,102 @@
+<mat-card class="mat-medium-font app-page-title">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Finance</li>
+            <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+            <li class="breadcrumb-item active" aria-current="page"><i
+                    class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningStockProduct"
+                    class="navigation-link">Dining Stock Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i
+                    class="fas fa-square-full list_style_square"></i>Add Dining Stock Product</li>
+        </ol>
+    </nav>
+    <div class="">
+        <h5 class="font-material">Add Dining Stock Product</h5>
+    </div>
+</mat-card>
+<div class="card-body card-white-background">
+    <div class="col d-flex justify-content-center">
+        <form [formGroup]="diningStockProductForm" (ngSubmit)="onSubmit(formDirective)" #formDirective="ngForm"
+            novalidate class="example-form">
+            <input matInput hidden formControlName="id">
+            <mat-form-field *ngIf="commonMethod.showForInstituteAdmin()">
+                <mat-label>Select Campus</mat-label>
+                <select matNativeControl id="campusId" formControlName="campusId" class="input-full-width">
+                    <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                        {{item.campusName}}
+                    </option>
+                    <option [value]="0">
+                        For All
+                    </option>
+                </select>
+                <mat-error *ngIf="diningStockProductForm.get('campusId').hasError('required')">
+                    Campus name is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="input-full-width">
+                <input matInput placeholder="Product Name" formControlName="productName">
+                <mat-error *ngIf="diningStockProductForm.get('productName').hasError('required')">
+                    Product Name is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="diningStockProductForm.get('productName').hasError('isTaken')">
+                    This name has already been <strong> taken</strong>. Please choose another one.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="input-full-width">
+                <input matInput placeholder="Brand" formControlName="brand">
+                <mat-error *ngIf="diningStockProductForm.get('brand').hasError('required')">
+                    Brand is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="input-full-width">
+                <input matInput placeholder="Product Unit" formControlName="unit">
+                <mat-error *ngIf="diningStockProductForm.get('unit').hasError('required')">
+                    Product Unit is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+            <div formArrayName='attributeAndValue'
+                *ngFor="let item of diningStockProductForm.get('attributeAndValue')['controls']; let i = index;">
+                <div class="row" [formGroupName]="i">
+                    <div class="col-sm-6">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Attribute" formControlName="attribute">
+                            <!-- <mat-error *ngIf="diningStockProductForm.get('attribute').hasError('required')">
+                                    Attribute is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Value" formControlName="value">
+                            <!-- <mat-error *ngIf="diningStockProductForm.get('value').hasError('required')">
+                                    Value is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="d-flex justify-content-center"
+                            *ngIf="diningStockProductForm.get('attributeAndValue').length > 1">
+                            <label class="hover-hand" for="removeAtrribitue">Remove</label>
+                            <button id="removeAtrribitue" class="btn-pull-right" type="button"
+                                (click)="onRemoveMoreAttributeAndValue(i)" mat-icon-button color="warn"
+                                aria-label="Example icon-button with a heart icon">
+                                <mat-icon>remove_circle</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="AddMoreAttributeAndValue" type="button" (click)="onAddMoreAttributeAndValue()"
+                        mat-icon-button color="primary" aria-label="Example icon-button with a heart icon">
+                        Add More Attribute And Value<mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+            <button type="button" routerLink="/finance/diningStockProduct" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+        </form>
+    </div>
+</div>

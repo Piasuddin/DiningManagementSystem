@@ -1,0 +1,45 @@
+.att {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .att li {
+    float: left;
+  }
+  .att li {
+    display: block;
+    color: ba;
+    text-align: center;
+    text-decoration: none;
+  }
+  .ul-li-border li{
+    border: 1px solid #F78A09;
+  }
+
+ul {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* ul li a {
+    display: block;
+} */
+.mat-column-meal-date{
+  width: 20%;
+}
+.mat-column-boarder-count{
+  width: 21%;
+}
+.mat-column-taken-meal{
+  width: 42%;
+}

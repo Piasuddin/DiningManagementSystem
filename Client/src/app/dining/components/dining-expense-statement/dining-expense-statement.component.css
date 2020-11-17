@@ -1,0 +1,15 @@
+.mat-column-expense-head{
+    width: 20%;
+}
+.mat-column-product-name{
+    width: 25%;
+}
+.mat-column-unit{
+    width: 14%;
+}
+.mat-column-rate{
+    width: 15%;
+}
+.mat-column-amount-custom{
+    width: 15%;
+}

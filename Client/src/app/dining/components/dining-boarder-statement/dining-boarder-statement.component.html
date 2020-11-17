@@ -1,0 +1,177 @@
+<div class="card mt-1">
+    <mat-card class="mat-medium-font app-page-title">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Finance</li>
+                <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningBill"
+                        class="navigation-link">Dining Bills</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>Dining Boarder Statement</li>
+            </ol>
+        </nav>
+        <div class="">
+            <h5>Dining Boarder Statement</h5>
+        </div>
+    </mat-card>
+    <div class="row d-flex justify-content-center">
+        <div *ngIf="!hide" class="col-sm-5 mt-4 mb-4">
+            <h6 class="text-center text-danger">{{message}}</h6>
+            <table class="table-layout">
+                <thead>
+                    <tr>
+                        <th class="text-center">Dining Boarder Statement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <form [formGroup]="diningBoarderStatementForm">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Boarder Id</td>
+                                            <td>
+                                                <input formControlName="boarderNo" class="table-text-box" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Form Date</td>
+                                            <td>
+                                                <input class="table-text-box" formControlName="formDate" type="date" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>To Date</td>
+                                            <td>
+                                                <input class="table-text-box" formControlName="toDate" type="date" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Output Format</td>
+                                            <td>
+                                                <select formControlName="outputFormat"
+                                                    class="table-text-box table-dropdown">
+                                                    <option value="HTML">HTML</option>
+                                                    <option value="PDF">PDF</option>
+                                                    <option value="Excel">Excel</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center">
+                            <input type="button" (click)="onSubmit()" value="Submit" class="btn-td" />
+                            <input type="button" value="Cancel" routerLink="/finance/diningBill" class="btn-td" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div *ngIf="hide" class="col-sm-9 mt-4 mb-4">
+            <table class="table-layout">
+                <thead>
+                    <tr>
+                        <th class="text-center">Dining Boarder Statement From {{searchData.formDate}} to
+                            {{searchData.toDate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>Boarder Id:</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.boarderNo}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Boarder Name</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.boarderName}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.address}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>Class:</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.className}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mobile:</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.mobile}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Enrollment Date:</td>
+                                                    <td>
+                                                        {{diningBoarderStatement?.boarderDetails?.enrollmentDateString}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table-layout">
+                <thead>
+                    <tr>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Particulars</th>
+                        <th class="text-center">Instrument No</th>
+                        <th class="text-center">Payable</th>
+                        <th class="text-center">Paid</th>
+                        <th class="text-center">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of diningBoarderStatement?.statements">
+                        <td>{{item.date}}</td>
+                        <td>{{item.particulars}}</td>
+                        <td>{{item.instruments}}</td>
+                        <td>{{item.payable}}</td>
+                        <td>{{item.paid}}</td>
+                        <td>{{item.balance}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-center"></th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center"></th>
+                        <th class="text-center">{{diningBoarderStatement?.totalPayable}}</th>
+                        <th class="text-center">{{diningBoarderStatement?.totalPaid}}</th>
+                        <th class="text-center">{{diningBoarderStatement?.totalBalance}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

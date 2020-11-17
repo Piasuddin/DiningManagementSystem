@@ -1,0 +1,419 @@
+<div id="scrolling" class="card mt-1">
+  <mat-card class="mat-medium-font app-page-title">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Finance</li>
+        <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-square-full list_style_square"></i><a
+            routerLink="/finance/diningBillCollection" class="navigation-link">Dining Bill Collections</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-square-full list_style_square"></i>Add
+          Dining Bill Collection</li>
+      </ol>
+    </nav>
+    <div class="">
+      <h5 class="font-material">Add Dining Bill Collection</h5>
+    </div>
+  </mat-card>
+  <div class="card-body card-white-background">
+    <div class="tab-content mt-3" id="nav-tabContent">
+      <div>
+        <div class="row d-flex justify-content-center">
+          <h3 class="text-center col-sm-7 mb-2">Search Border</h3>
+          <div class="col-sm-7">
+            <div class="form-group search-container">
+              <div class="input-group custom-group mb-3">
+                <input id="valueCheck" autocomplete="off" [formControl]="boarderSearchKey" type="text"
+                  class="form-control" placeholder="Type here name or id or mobile number...">
+                <div class="input-group-append">
+                  <button class="btn btn-custom-search" style="width: 60px; background: #232323;"
+                    routerLink="/finance/diningBoarder" type="button">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="search-suggestion-container">
+                <ul id="list">
+                  <li data-value="{{item.id}}" (click)="getBorder(item.id)" *ngFor="let item of filteredOptions">
+                    {{getName(item.id)}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- <div class="form-group">
+              <div class="input-group custom-group mb-3">
+                <input #searchKey="ngModel" (input)="onInput()" [(ngModel)]="boarderId" type="text" class="form-control"
+                  placeholder="Type here name or id or mobile number...">
+                <div class="input-group-append">
+                  <button class="btn btn-custom-search" style="width: 60px;" (click)="getBorder(searchKey.model)"
+                    type="button">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="col-sm-7 d-flex justify-content-center" *ngIf="isShow">
+            <div class="loadingio-spinner-spinner-5uar6jk0r6d">
+              <div class="ldio-71ptmg24hrp">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="inCash" class="row d-flex justify-content-center">
+        <div class="col-sm-7">
+          <h3 class="text-center col-sm-12 mb-2">Border Details</h3>
+          <input type="text" hidden readonly>
+        </div>
+        <div class="col-sm-7 app-ml-2 mt-2">
+          <dl>
+            <div class="row mb-1">
+              <dt class="label-for-input col-sm-5">Border id</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.boarderNo}}
+              </dd>
+            </div>
+            <div class="row mb-1" *ngIf="diningBillCollectionAddData?.diningBorderDetails?.campusName &&
+                    commonMethod.showForInstituteAdmin()">
+              <dt class="label-for-input col-sm-5">Campus Name</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.campusName}}
+              </dd>
+            </div>
+            <div class="row mb-1">
+              <dt class="label-for-input col-sm-5">Border Name</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.boarderName}}
+              </dd>
+            </div>
+            <div class="row mb-1">
+              <dt class="label-for-input col-sm-5">Border Father's Name</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.fathersName}}
+              </dd>
+            </div>
+            <div class="row mb-1">
+              <dt class="label-for-input col-sm-5">Mobile No.</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.mobile}}
+              </dd>
+            </div>
+            <div class="row mb-1">
+              <dt class="label-for-input col-sm-5">Address</dt>
+              <dd class="col-sm-7 dl-dd-data mb-1">
+                {{diningBillCollectionAddData?.diningBorderDetails?.address}}
+              </dd>
+            </div>
+            <div class="row mb-1">
+              <dt class="label-for-input date-field-height col-sm-5">Collection Date</dt>
+              <dd class="col-sm-7 dl-dd-data">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker3" placeholder="Choose Payment Date"
+                    [(ngModel)]="collectionDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <div class="col-sm-7 mt-2">
+          <table id="dtBasicExample1" class="sorttable table table-bordered table-striped table-hover" width="100%"
+            cellspacing="0" role="grid">
+            <thead class="text-center">
+              <tr>
+                <th class="th-sm">
+                  <span class="text-center">SL</span>
+                </th>
+                <th class="th-sm">
+                  <span class="text-center">Month</span>
+                </th>
+                <th class="th-sm">
+                  <span class="text-center">Payble</span>
+                </th>
+                <th class="th-sm">
+                  <span class="text-center">Pay Now</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr role="row" *ngFor="let item of diningBillCollectionAddData?.diningBillPayable; let i = index;"
+                class="odd">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-left">{{item.monthName}}</td>
+                <td class="text-right">{{item.payingAmount | currency: ' '}}
+                </td>
+                <td class="text-right">
+                  <input type="text" id="inputVal{{i}}" name="{{item.diningBillId}}" class="form-control text-right"
+                    (value)="'value' + i" #value{{i}}="ngModel" (ngModel)="'inputVal'+i"
+                    (keyup)="calculatePayingFee($event, item.diningBillId)" placeholder="0.00">
+                </td>
+              </tr>
+              <tr role="row" class="even">
+                <td class="text-center"><b>Total</b></td>
+                <td class="text-left"></td>
+                <td class="text-right"><b>{{totalFee | currency: " "}}</b></td>
+                <td class="text-right"><b>{{totalPayingFee | currency: " "}}</b></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="form-group">
+            <select type="select" [(ngModel)]="selectedMode" name="expectedGroup" class="form-control dropdown-color">
+              <option disabled selected value='undefined'>-- Select Payment Mode --</option>
+              <option [value]="key.id" *ngFor="let key of diningBillCollectionAddData?.collectionMode">{{key.name}}
+              </option>
+            </select>
+          </div>
+          <button type="button" mat-raised-button class="btn-custom mt-2 float-right" color="primary"
+            *ngIf="selectedMode == undefined" (click)="onMainSave()">Save</button>
+          <button *ngIf="selectedMode == undefined" type="button" routerLink="/finance/diningBillCollection"
+            mat-raised-button class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+        </div>
+        <div id="inCashCheque" *ngIf="getMode(1)" class="col-sm-7">
+          <div>
+            <form [formGroup]="cashForm" (ngSubmit)="onCashSubmit()" novalidate class="form-full-width">
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Note" formControlName="note">
+                <mat-error *ngIf="cashForm.get('note').hasError('required')">
+                  Note is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+              <button type="button" routerLink="/finance/diningBillCollection" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+          </div>
+        </div>
+        <div id="inCashCheque" *ngIf="getMode(2)" class="col-sm-7">
+          <div>
+            <form [formGroup]="cashChequeForm" (ngSubmit)="onCashChequeSubmit()" novalidate class="form-full-width">
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Cheque Number" formControlName="chequeNo">
+                <mat-error *ngIf="cashChequeForm.get('chequeNo').hasError('required')">
+                  Cheque Number is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput class="input-full-width" [matDatepicker]="dp1" placeholder="Cheque Date"
+                  formControlName="chequeDate">
+                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                <mat-datepicker #dp1></mat-datepicker>
+                <mat-error *ngIf="cashChequeForm.get('chequeDate').hasError('required')">
+                  Cheque Date is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Account Number" formControlName="accountNo">
+                <mat-error *ngIf="cashChequeForm.get('accountNo').hasError('required')">
+                  Account Number is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Bank Name" formControlName="bankName">
+                <mat-error *ngIf="cashChequeForm.get('bankName').hasError('required')">
+                  Bank Name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Branch" formControlName="branch">
+                <mat-error *ngIf="cashChequeForm.get('branch').hasError('required')">
+                  Branch is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Note" formControlName="note">
+                <mat-error *ngIf="cashChequeForm.get('note').hasError('required')">
+                  Note is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+              <button type="button" routerLink="/finance/diningBillCollection" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+          </div>
+        </div>
+        <div id="inAccountPayeeCheque" *ngIf="getMode(3)" class="col-sm-7">
+          <div>
+            <form [formGroup]="accountPayeeChequeForm" (ngSubmit)="onaccountPayeeChequeSubmit()" novalidate
+              class="form-full-width">
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Cheque Number" formControlName="chequeNo">
+                <mat-error *ngIf="accountPayeeChequeForm.get('chequeNo').hasError('required')">
+                  Cheque Number is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput class="input-full-width" [matDatepicker]="dp2" placeholder="Cheque Date"
+                  formControlName="chequeDate">
+                <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                <mat-datepicker #dp2></mat-datepicker>
+                <mat-error *ngIf="accountPayeeChequeForm.get('chequeDate').hasError('required')">
+                  Cheque Date is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Form Account Number" formControlName="accountNo">
+                <mat-error *ngIf="accountPayeeChequeForm.get('accountNo').hasError('required')">
+                  Account Number is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Bank Name" formControlName="bankName">
+                <mat-error *ngIf="accountPayeeChequeForm.get('bankName').hasError('required')">
+                  Bank Name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Branch" formControlName="branch">
+                <mat-error *ngIf="accountPayeeChequeForm.get('branch').hasError('required')">
+                  Branch is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <mat-label>Select Account nunmber</mat-label>
+                <select matNativeControl id="bankAccountId" formControlName="bankAccountId">
+                  <option value="" disabled selected></option>
+                  <option *ngFor="let item of diningBillCollectionAddData?.bankAccounts" [value]="item.bankAccountId">
+                    {{item.accountName}}-{{item.accountNo}}-{{item.bankName}}, {{item.branchName}}
+                  </option>
+                </select>
+                <mat-error *ngIf="accountPayeeChequeForm.get('bankAccountId').hasError('required')">
+                  Account nunmber to pay is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput class="input-full-width" [matDatepicker]="dptransferDate" placeholder="Transfer Date"
+                  formControlName="transferDate">
+                <mat-datepicker-toggle matSuffix [for]="dptransferDate"></mat-datepicker-toggle>
+                <mat-datepicker #dptransferDate></mat-datepicker>
+                <mat-error *ngIf="accountPayeeChequeForm.get('transferDate').hasError('required')">
+                  Transfer Date is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Note" formControlName="note">
+                <mat-error *ngIf="accountPayeeChequeForm.get('note').hasError('required')">
+                  Note is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+              <button type="button" routerLink="/finance/diningBillCollection" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+          </div>
+        </div>
+        <div id="inDepositToBank" *ngIf="getMode(4)" class="col-sm-7">
+          <div>
+            <form [formGroup]="depositToBankForm" (ngSubmit)="onDepositToBankSubmit()" novalidate
+              class="form-full-width">
+              <mat-form-field class="input-full-width">
+                <input matInput class="input-full-width" [matDatepicker]="dp3" placeholder="Deposit Date"
+                  formControlName="depositDate">
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <mat-datepicker #dp3></mat-datepicker>
+                <mat-error *ngIf="depositToBankForm.get('depositDate').hasError('required')">
+                  Deposit Date is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Fund Transfer No" formControlName="transectionNo">
+                <mat-error *ngIf="depositToBankForm.get('transectionNo').hasError('required')">
+                  Fund Transfer No is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <mat-label>Select Account nunmber</mat-label>
+                <select matNativeControl id="bankAccountId" formControlName="bankAccountId">
+                  <option value="" disabled selected></option>
+                  <option *ngFor="let item of diningBillCollectionAddData?.bankAccounts" [value]="item.bankAccountId">
+                    {{item.accountName}}-{{item.accountNo}}-{{item.bankName}}, {{item.branchName}}
+                  </option>
+                </select>
+                <mat-error *ngIf="depositToBankForm.get('bankAccountId').hasError('required')">
+                  Account nunmber to pay is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Note" formControlName="note">
+                <mat-error *ngIf="depositToBankForm.get('note').hasError('required')">
+                  Note is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+              <button type="button" routerLink="/finance/diningBillCollection" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+          </div>
+        </div>
+        <div id="inMobileBanking" *ngIf="getMode(5)" class="col-sm-7">
+          <div>
+            <form [formGroup]="mobileBankingForm" (ngSubmit)="onMobileBankingSubmit()" novalidate
+              class="form-full-width">
+              <mat-form-field class="input-full-width">
+                <mat-label>Transfer Date</mat-label>
+                <input matInput class="input-full-width" [matDatepicker]="dp4" placeholder="Transfer Date"
+                  formControlName="transferDate">
+                <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+                <mat-datepicker #dp4></mat-datepicker>
+                <mat-error *ngIf="mobileBankingForm.get('transferDate').hasError('required')">
+                  Transfer Date is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Fund Transfer No" formControlName="transectionNo">
+                <mat-error *ngIf="mobileBankingForm.get('transectionNo').hasError('required')">
+                  Fund Transfer No is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <mat-label>Select Mobile Banking Account nunmber</mat-label>
+                <select matNativeControl id="MobileBankingAccId" formControlName="MobileBankingAccId">
+                  <option value="" disabled selected></option>
+                  <option *ngFor="let item of diningBillCollectionAddData?.mobileBankingAccounts" [value]="item.id">
+                    {{item.mobileBankingAccTypeName}}-{{item.mobileBankingTypeName}}, {{item.mobileBankingMobileNo}}
+                  </option>
+                </select>
+                <mat-error *ngIf="mobileBankingForm.get('MobileBankingAccId').hasError('required')">
+                  Mobile Banking Account nunmber to pay is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Note" formControlName="note">
+                <mat-error *ngIf="mobileBankingForm.get('note').hasError('required')">
+                  Note is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button type="submit" mat-raised-button class="btn-custom mt-2 float-right" color="primary">Save</button>
+              <button type="button" routerLink="/finance/diningBillCollection" mat-raised-button
+                class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- lst -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<div id="scrolling" class="card mt-1">
+    <mat-card class="mat-medium-font app-page-title">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Finance</li>
+                <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningStockAdjustment"
+                        class="navigation-link">Dining Stock Adjustments</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>
+                        <span *ngIf="!(this.adjustmentId > 0)">Add Dining Stock Adjustment</span>
+                        <span *ngIf="this.adjustmentId > 0">Update Dining Stock Adjustment</span>
+                </li>
+            </ol>
+        </nav>
+        <div class="">
+            <h5 class="font-material" *ngIf="!(this.adjustmentId > 0)">Add Dining Stock Adjustment</h5>
+            <h5 class="font-material" *ngIf="this.adjustmentId > 0">Update Dining Stock Adjustment</h5>
+        </div>
+    </mat-card>
+    <div class="card-body card-white-background">
+        <div class="tab-content mt-3" id="nav-tabContent">
+            <div>
+                <div class="row d-flex justify-content-center">
+                    <h3 class="text-center col-sm-7 mb-2" *ngIf="!(this.adjustmentId > 0)">Select a date to manage stock</h3>
+                    <div class="col-sm-7 mt-3">
+                        <mat-form-field appearance="outline" *ngIf="commonMethod.showForInstituteAdmin()">
+                            <mat-label>Select Campus</mat-label>
+                            <select matNativeControl id="campusId" [(ngModel)]="campusId"
+                                class="input-full-width">
+                                <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                                    {{item.campusName}}
+                                </option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-7 mt-3" *ngIf="!(this.adjustmentId > 0)">
+                        <mat-form-field>
+                            <mat-label>Stock manage date</mat-label>
+                            <input matInput #dateKey='ngModel' [(ngModel)]="dates" class="input-full-width"
+                                [matDatepicker]="picker" placeholder="Stock manage date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <button mat-button matSuffix mat-stroked-button color="primary" aria-label="search"
+                                (click)="getManageProduct(dateKey.model)">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <mat-datepicker #picker (monthSelected)="monthSelected($event)" startView="multi-year">
+                            </mat-datepicker>
+                            <mat-error>
+                                Registration Date is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-7 d-flex justify-content-center" *ngIf="isShow">
+                        <div class="loadingio-spinner-spinner-5uar6jk0r6d">
+                            <div class="ldio-71ptmg24hrp">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="inCash" class="row d-flex justify-content-center">
+                <div class="col-sm-7 mt-2">
+                    <table id="dtBasicExample1" class="sorttable table table-bordered table-striped table-hover"
+                        width="100%" cellspacing="0" role="grid">
+                        <thead class="text-center">
+                            <tr>
+                                <th class="th-sm">
+                                    <span class="text-center">SL</span>
+                                </th>
+                                <th class="th-sm">
+                                    <span class="text-center">Product</span>
+                                </th>
+                                <th class="th-sm">
+                                    <span class="text-center">Total Purchase</span>
+                                </th>
+                                <th class="th-sm">
+                                    <span class="text-center">In Stock</span>
+                                </th>
+                                <th class="th-sm">
+                                    <span class="text-center">Total Used</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td *ngIf="0 >= lstStockManageAddData.length || lstStockManageAddData.length == undefined"
+                                    colspan="5" class="text-center text-danger">Stock manage data is not available</td>
+                            </tr>
+                            <tr role="row" *ngFor="let item of lstStockManageAddData; let i = index;" class="odd">
+                                <td class="text-center">{{i + 1}}</td>
+                                <td class="text-left">{{item?.productName}}</td>
+                                <td class="text-right">{{item?.totalQty}} {{item?.unit}}</td>
+                                <td class="text-right">
+                                    <input type="text" autocomplete="off" id="inputVal{{i}}" name="{{item.id}}"
+                                        class="form-control text-right" (value)="'value' + i" #value{{i}}="ngModel"
+                                        [(ngModel)]="lstStockManageAddData[i].inStock"
+                                        (keyup)="calculateAvailableStock()" placeholder="0.000">
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" autocomplete="off" name="total{{item.id}}" class="form-control text-right"
+                                        [(ngModel)]="lstStockManageAddData[i].usedQyt" (keyup)="calculateUsedQty()"
+                                        placeholder="0.00">
+                                    <!-- {{item?.usedQyt}} {{item?.unit}} -->
+                                </td>
+                            </tr>
+                            <!-- <tr role="row" class="even">
+                                <td class="text-center"><b>Total</b></td>
+                                <td class="text-left"></td>
+                                <td class="text-right"><b>{{totalFee | currency: " "}}</b></td>
+                                <td class="text-right"><b>{{totalPayingFee | currency: " "}}</b></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                    <button type="button" mat-raised-button class="btn-custom mt-2 float-right" color="primary"
+                        (click)="onCloseAccounts()" style="width: auto!important;">Submit</button>
+                    <button type="button" routerLink="/finance/diningStockAdjustment" mat-raised-button
+                        class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

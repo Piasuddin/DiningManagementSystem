@@ -1,0 +1,334 @@
+<div id="scrolling" class="card mt-1">
+    <mat-card class="mat-medium-font app-page-title">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Finance</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>Dining</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningBoarder"
+                        class="navigation-link">Dining Boarders</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>Add Dining Boarder</li>
+            </ol>
+        </nav>
+        <div class="">
+            <h5 class="font-material">Add Dining Boarder</h5>
+        </div>
+    </mat-card>
+    <div class="card-body card-white-background">
+        <div class="row d-flex justify-content-center">
+            <h3 class="text-center col-sm-7 mb-2"
+                *ngIf="diningBoarderForm.get('boarderTypeId').value != diningBoardertype.Outer">Search Dining Boarder
+            </h3>
+            <div class="col-sm-7">
+                <form [formGroup]="diningBoarderForm" (ngSubmit)="onSubmit()" novalidate style="padding-top: 2rem;">
+                    <mat-form-field class="input-full-width">
+                        <select matNativeControl id="boarderTypeId" formControlName="boarderTypeId">
+                            <option value="" disabled selected>Select Border Type</option>
+                            <option *ngFor="let type of boarderType" [value]="type">
+                                {{diningBoardertype[type]}}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="diningBoarderForm.get('boarderTypeId').hasError('required')">
+                            Boarder Type is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput class="input-full-width" [matDatepicker]="dp" placeholder="Enrollment Date"
+                            formControlName="enrollmentDate">
+                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp></mat-datepicker>
+                        <mat-error *ngIf="diningBoarderForm.get('enrollmentDate').hasError('required')">
+                            Enrollment Date is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <input matInput hidden formControlName="empOrStudentId"
+                        value="{{diningBoarderAddData?.diningBorderDetails?.empOrStuId}}">
+                </form>
+                <form [formGroup]="diningBoarderExternalForm" (ngSubmit)="onSubmit()">
+                    <ng-container *ngIf="diningBoarderForm.get('boarderTypeId').value == diningBoardertype.Outer">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Name" formControlName="name">
+                            <mat-error *ngIf="diningBoarderExternalForm.get('name').hasError('required')">
+                                Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Father's Name" formControlName="fathersName">
+                            <mat-error *ngIf="diningBoarderExternalForm.get('fathersName').hasError('required')">
+                                Father's Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <span matPrefix>+88 &nbsp;</span>
+                                    <input type="tel" matInput placeholder="Mobile number" formControlName="mobileNo">
+                                    <mat-icon matSuffix>mode_edit</mat-icon>
+                                    <mat-error *ngIf="diningBoarderExternalForm.get('mobileNo').hasError('required')">
+                                        Mobile number is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput placeholder="Email" formControlName="email">
+                                    <mat-error *ngIf="diningBoarderExternalForm.get('email').hasError('required')">
+                                        Email Address is <strong>required</strong>
+                                    </mat-error>
+                                    <mat-error *ngIf="diningBoarderExternalForm.get('email').hasError('email')">
+                                        Please enter a valid <strong>email</strong> address
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field>
+                                    <input matInput class="input-full-width" [matDatepicker]="dp"
+                                        placeholder="Date Of Birth" formControlName="dateOfBirth">
+                                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                    <mat-datepicker #dp></mat-datepicker>
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('dateOfBirth').hasError('required')">
+                                        Date Of Birth is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <mat-label>Religion</mat-label>
+                                    <select matNativeControl id="religionId" placeholder="Religion"
+                                        formControlName="religionId">
+                                        <option value="" disabled selected></option>
+                                        <option *ngFor="let item of keysOfReligion" [value]="item">
+                                            {{religion[item]}}
+                                        </option>
+                                    </select>
+                                    <mat-error *ngIf="diningBoarderExternalForm.get('religionId').hasError('required')">
+                                        Religion is<strong> required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <mat-label>Nationality</mat-label>
+                                    <select matNativeControl id="nationalityId" placeholder="Nationality"
+                                        formControlName="nationalityId">
+                                        <option value="" disabled selected></option>
+                                        <option *ngFor="let item of commonDataList.lstCountries" [value]="item.id">
+                                            {{item.nationalityName}}
+                                        </option>
+                                    </select>
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('nationalityId').hasError('required')">
+                                        Nationality is<strong> required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput placeholder="National ID Number" formControlName="nationalIdNo">
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('nationalIdNo').hasError('required')">
+                                        National ID Number is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <select matNativeControl id="presentDistrict" placeholder="Present District"
+                                        formControlName="presentDistrict">
+                                        <option value="" disabled selected>Select District</option>
+                                        <option *ngFor="let item of commonDataList?.lstDistricts" [value]="item.id">
+                                            {{item.districtName}}
+                                        </option>
+                                    </select>
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentDistrict').hasError('required')">
+                                        District is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <select matNativeControl id="presentUpazila" placeholder="Present Upazila"
+                                        formControlName="presentUpazila">
+                                        <option value="" disabled selected>Select Upazila</option>
+                                        <option *ngFor="let item of getlstOfPresentUpazilas()" [value]="item.id">
+                                            {{item.upazilaName}}
+                                        </option>
+                                    </select>
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentUpazila').hasError('required')">
+                                        Upazila is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <select matNativeControl id="presentPostOffice" placeholder="Present Post Office"
+                                        formControlName="presentPostOffice"
+                                        (change)="onPresentPostOfficeChange($event)">
+                                        <option value="" disabled selected>Select Post Office</option>
+                                        <option *ngFor="let item of getPostOffice()" [value]="item.id">
+                                            {{item.postOfficeName}}
+                                        </option>
+                                    </select>
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentPostOffice').hasError('required')">
+                                        Post Office is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput formControlName="presentPostCode" placeholder="Present Post Code"
+                                        readonly placeholder="Post Code">
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentPostCode').hasError('required')">
+                                        Post Code is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput formControlName="presentVillageHouse" placeholder="Village/House">
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentVillageHouse').hasError('required')">
+                                        Village/House is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-6">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput formControlName="presentRoadBlockSector"
+                                        placeholder="Road/Block/Sector">
+                                    <mat-error
+                                        *ngIf="diningBoarderExternalForm.get('presentRoadBlockSector').hasError('required')">
+                                        Road/Block/Sector is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <mat-form-field>
+                            <mat-label>About Boarder</mat-label>
+                            <textarea matInput formControlName="aboutBorder" placeholder="About boarder"
+                                class="input-full-width"></textarea>
+                        </mat-form-field>
+                    </ng-container>
+                </form>
+                <div class="form-group" *ngIf="diningBoarderForm.get('boarderTypeId').value != diningBoardertype.Outer">
+                    <div class="input-group custom-group mb-3">
+                        <input #searchKey="ngModel" name="borderId" [(ngModel)]="borderId" type="text"
+                            class="form-control" placeholder="Type Here Dining Boarder ID...">
+                        <div class="input-group-append">
+                            <button class="btn btn-custom-search" style="width: 60px; background: #232323; color: #fff"
+                                (click)="getDiningBoarder(searchKey.model)" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="diningBoarderForm.get('boarderTypeId').value != diningBoardertype.Outer"
+            class="row d-flex justify-content-center">
+            <div class="col-sm-7 d-flex justify-content-center" *ngIf="isShow">
+                <div class="loadingio-spinner-spinner-5uar6jk0r6d">
+                    <div class="ldio-71ptmg24hrp">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="diningBoarderForm.get('boarderTypeId').value != diningBoardertype.Outer" id="inCash"
+            class="row d-flex justify-content-center">
+            <div class="col-sm-7">
+                <h3 class="text-center col-sm-12 mb-2">Dining Boarder Details</h3>
+                <input type="text" hidden readonly>
+            </div>
+            <div class="col-sm-7 app-ml-2 mt-2">
+                <dl>
+                    <div id="empOrStuId" hidden>
+                        <dd>
+                            {{diningBoarderAddData?.diningBoarderDetails?.empOrStuId}}
+                        </dd>
+                    </div>
+                    <div class="row mb-1" *ngIf="diningBoarderAddData?.diningBoarderDetails?.campusName &&
+                    commonMethod.showForInstituteAdmin()">
+                        <dt class="label-for-input col-sm-5">Campus Name</dt>
+                        <dd class="col-sm-7 dl-dd-data mb-1">
+                            {{diningBoarderAddData?.diningBoarderDetails?.campusName}}
+                        </dd>
+                    </div>
+                    <div class="row mb-1">
+                        <dt class="label-for-input col-sm-5">Boarder Name</dt>
+                        <dd class="col-sm-7 dl-dd-data mb-1">
+                            {{diningBoarderAddData?.diningBoarderDetails?.boarderName}}
+                        </dd>
+                    </div>
+                    <div class="row mb-1">
+                        <dt class="label-for-input col-sm-5">Boarder Father's Name</dt>
+                        <dd class="col-sm-7 dl-dd-data mb-1">
+                            {{diningBoarderAddData?.diningBoarderDetails?.fathersName}}
+                        </dd>
+                    </div>
+                    <div class="row mb-1">
+                        <dt class="label-for-input col-sm-5">Mobile No.</dt>
+                        <dd class="col-sm-7 dl-dd-data mb-1">
+                            {{diningBoarderAddData?.diningBoarderDetails?.mobile}}
+                        </dd>
+                    </div>
+                    <div class="row mb-1">
+                        <dt class="label-for-input col-sm-5">Address</dt>
+                        <dd class="col-sm-7 dl-dd-data mb-1">
+                            {{diningBoarderAddData?.diningBoarderDetails?.address}}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-7">
+                <button type="submit" (click)="onSubmit()" mat-raised-button class="btn-custom mt-2 float-right"
+                    color="primary">Save</button>
+                <button type="button" routerLink="/finance/diningBoarder" mat-raised-button
+                    class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

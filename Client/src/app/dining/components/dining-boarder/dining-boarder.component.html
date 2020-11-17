@@ -1,0 +1,237 @@
+<div id="scrolling">
+    <div class="card-body">
+        <div class="page_header">
+            <div class="page_name_title app-page-title">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Finance</li>
+                        <li class="breadcrumb-item active" aria-current="page"><i
+                                class="fas fa-square-full list_style_square"></i>Dining</li>
+                        <li class="breadcrumb-item active" aria-current="page"><i
+                                class="fas fa-square-full list_style_square"></i>Dining Boarders</li>
+                    </ol>
+                </nav>
+                <h5>Dining Boarders
+                    <span style="color: #6c757d;" *ngIf="this.commonMethod.showForInstituteAdmin()">
+                        of
+                        <span class="hover-pointer">
+                            <select [(ngModel)]="cachedTableDataService.campusId"
+                                (change)="cachedTableDataService.onCampusChange(52)" style="border: none;">
+                                <option disabled value="0" selected>--Select Campus--</option>
+                                <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                                    {{item.campusName}}
+                                </option>
+                            </select>
+                        </span>
+                    </span>
+                </h5>
+            </div>
+            <div class="page_action text-right">
+                <div class="btn-group">
+                    <button type="button" class="btn green dropdown-toggle action_btn_ksa" data-toggle="dropdown"
+                        data-hover="dropdown" data-delay="1000" data-close-others="true" aria-expanded="false">
+                        <span class="text-uppercase">Action</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button *ngIf="commonMethod.isShowAction(195)" class="dropdown-item" type="button"
+                            routerLink="/finance/addDiningBoarder/">Add
+                            New</button>
+                        <button class="dropdown-item" type="button" *ngIf="commonMethod.isShowAction(196)">Print
+                            PDF</button>
+                        <button class="dropdown-item" type="button" *ngIf="commonMethod.isShowAction(197)">Print
+                            Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-search-form-div" (click)="closeSearchBox()">
+    </div>
+    <div class="medium-table-container">
+        <div class="mat-elevation-z8 medium-table">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="boarderNo">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-id">
+                        <i class="fas fa-sort-amount-down" (click)="sortTableData('0', this)"></i>
+                        <i class="fas fa-sort-amount-up" (click)="sortTableData('0', this)"></i>ID<span
+                            class="material-icons mat-table-search-icon" (click)="showSearchBox('boarderNoSearchBox')">
+                            arrow_drop_down
+                        </span>
+                        <form role="search" id="boarderNoSearchBox" method="get" class="table-search-form">
+                            <mat-form-field class="example-form-field " appearance="outline">
+                                <mat-label>ID</mat-label>
+                                <input matInput type="text" (focus)="commonMethod.setupFilter('boarderNo', dataSource)"
+                                    (keyup)="commonMethod.applyFilter(dataSource, $event.target.value)"
+                                    placeholder="Search By ID">
+                                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="value=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </form>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="text-center mat-column-id"> {{row.boarderNo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="boarderName">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-name">
+                        <i class="fas fa-sort-amount-down" (click)="sortTableData('1', this)"></i>
+                        <i class="fas fa-sort-amount-up" (click)="sortTableData('1', this)"></i>Boarder Name<span
+                            class="material-icons mat-table-search-icon"
+                            (click)="showSearchBox('boarderNameSearchBox')">
+                            arrow_drop_down
+                        </span>
+                        <form role="search" id="boarderNameSearchBox" method="get" class="table-search-form">
+                            <mat-form-field class="example-form-field " appearance="outline">
+                                <mat-label>Name</mat-label>
+                                <input matInput type="text"
+                                    (focus)="commonMethod.setupFilter('boarderName', dataSource)"
+                                    (keyup)="commonMethod.applyFilter(dataSource, $event.target.value)"
+                                    placeholder="Search By Name" />
+                                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="value=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </form>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="mat-column-name"> {{row.boarderName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="boarderTypeName">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-type">
+                        <i class="fas fa-sort-amount-down" (click)="sortTableData('2', this)"></i>
+                        <i class="fas fa-sort-amount-up" (click)="sortTableData('2', this)"></i>Boarder Type<span
+                            class="material-icons mat-table-search-icon"
+                            (click)="showSearchBox('boarderTypeNameSearchBox')">
+                            arrow_drop_down
+                        </span>
+                        <form role="search" id="boarderTypeNameSearchBox" method="get" class="table-search-form">
+                            <mat-form-field class="example-form-field " appearance="outline">
+                                <mat-label>Boarder Type</mat-label>
+                                <input matInput type="text"
+                                    (focus)="commonMethod.setupFilter('boarderTypeName', dataSource)"
+                                    (keyup)="commonMethod.applyFilter(dataSource, $event.target.value)"
+                                    placeholder="Search By Boarder Type">
+                                <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="value=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </form>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="text-center mat-column-type"> {{row.boarderTypeName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="enrollmentDateString">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-enrollment-date">
+                        <i class="fas fa-sort-amount-down" (click)="sortTableData('3', this)"></i>
+                        <i class="fas fa-sort-amount-up" (click)="sortTableData('3', this)"></i>Enrollment Date<span
+                            class="material-icons mat-table-search-icon"
+                            (click)="showSearchBox('enrollmentDateStringSearchBox')">
+                            arrow_drop_down
+                        </span>
+                        <form role="search" id="enrollmentDateStringSearchBox" method="get" class="table-search-form">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Enrollment Date</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate #formDate
+                                        (focus)="commonMethod.setupFilterDateRange('enrollmentDate', dataSource)"
+                                        (dateChange)="commonMethod.applyFilterDateRange(dataSource, formDate.value, toDate.value)"
+                                        (dateInput)="commonMethod.applyFilterDateRange(dataSource, formDate.value, toDate.value)"
+                                        placeholder="Start date">
+                                    <input matEndDate placeholder="End date" #toDate
+                                        (dateInput)="commonMethod.applyFilterDateRange(dataSource, formDate.value, toDate.value)"
+                                        (dateChange)="commonMethod.applyFilterDateRange(dataSource, formDate.value, toDate.value)">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker
+                                    (opened)="commonMethod.setupFilterDateRange('enrollmentDate', dataSource)" #picker>
+                                </mat-date-range-picker>
+                            </mat-form-field>
+                        </form>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="text-center mat-column-enrollment-date">
+                        {{row.enrollmentDateString}} </td>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-status">
+                        <i class="fas fa-sort-amount-down" (click)="sortTableData(4, this)"></i>
+                        <i class="fas fa-sort-amount-up" (click)="sortTableData(4, this)"></i>Status<span
+                            class="material-icons mat-table-search-icon" (click)="showSearchBox('statusSearchBox')">
+                            arrow_drop_down
+                        </span>
+                        <div class="d-flex justify-content-end">
+                            <form role="search" id="statusSearchBox" method="get" class="table-search-form">
+                                <mat-form-field class="example-form-field" appearance="outline">
+                                    <mat-label>Status</mat-label>
+                                    <input matInput type="text"
+                                        (focus)="commonMethod.setupFilter('statusName', dataSource)"
+                                        (keyup)="commonMethod.applyFilter(dataSource, $event.target.value)"
+                                        placeholder="Search By Status">
+                                    <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="value=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </form>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let row" layout-align="center center"
+                        class="text-center mat-column-status">
+                        <mat-chip-list>
+                            <mat-chip color="green" *ngIf="row.status == 1" selected>{{row.statusName}}</mat-chip>
+                            <mat-chip color="danger" *ngIf="row.status == 2" selected>{{row.statusName}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef class="text-center mat-column-action">Action</th>
+                    <td mat-cell *matCellDef="let row" [style.color]="" class="text-center mat-column-action">
+                        <div class="btn-group">
+                            <button type="button" class="btn green dropdown-toggle action_btn_ksa"
+                                data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true"
+                                aria-expanded="false">
+                                <span class="text-uppercase">Action</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button *ngIf="commonMethod.isShowAction(198)"
+                                    routerLink="/finance/diningBoarderDetails/{{row.id}}" class="dropdown-item"
+                                    type="button">
+                                    Details
+                                </button>
+                                <button
+                                    *ngIf="commonMethod.isShowAction(200) && row.boarderTypeId == diningBorder.Outer"
+                                    routerLink="/finance/addDiningBoarder/{{row.diningBoarderId}}" class="dropdown-item"
+                                    type="button">
+                                    Edit
+                                </button>
+                                <button (click)="onDelete(row.id)"
+                                    *ngIf="commonMethod.isShowAction(199) && row.isDeletable" class="dropdown-item"
+                                    type="button">
+                                    Delete
+                                </button>
+                                <ng-container *ngIf="commonMethod.isShowAction(201)">
+                                    <button *ngIf="row.status == commonEnum.Inactive"
+                                        (click)="onStatusChange(row.id, commonEnum.Active, 'activated')"
+                                        class="dropdown-item" type="button">
+                                        Activate
+                                    </button>
+                                </ng-container>
+                                <ng-container *ngIf="commonMethod.isShowAction(202)">
+                                    <button *ngIf="row.status == commonEnum.Active"
+                                        (click)="onStatusChange(row.id, commonEnum.Inactive, 'deactivated')"
+                                        class="dropdown-item" type="button">
+                                        Deactivate
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

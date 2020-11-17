@@ -1,0 +1,128 @@
+<div class="card mt-1">
+    <mat-card class="mat-medium-font app-page-title">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Finance</li>
+                <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningBill"
+                        class="navigation-link">Dining Bills</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>Dining Bill Details</li>
+            </ol>
+        </nav>
+        <div class="">
+            <h5>Dining Bill Details</h5>
+        </div>
+    </mat-card>
+    <div class="card-body card-white-background">
+        <div class="col d-flex justify-content-center">
+            <div class="row">
+                <div class="col-sm-12">
+                    <mat-toolbar color="primary">
+                        <mat-toolbar-row class="grid">
+                            <span class="title-center">Details</span>
+                        </mat-toolbar-row>
+                    </mat-toolbar>
+                </div>
+            </div>
+            <div class="row">
+                <div class="details-body mt-5 mb-5">
+                    <div class="row details-body-relative">
+                        <div class="col-sm-6">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Month</th>
+                                        <td>{{diningBillDetails?.billForMonthName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Number of Boarder</th>
+                                        <td>{{diningBillDetails?.boarderDetails?.length}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Meal</th>
+                                        <td>{{diningBillDetails?.totalMeal}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="val">
+
+                        </div>
+                        <div class="col-sm-6">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Meal Rate</th>
+                                        <td>{{diningBillDetails?.mealRate}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Amount</th>
+                                        <td>{{diningBillDetails?.totalBill}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Status</th>
+                                        <td colspan="2">{{diningBillDetails?.statusName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="details-body mt-5 mb-5">
+                    <div class="text-center mb-3">
+                        Adjustment Month: {{diningBillDetails?.billForMonthName}}<br />
+                        Number Of Adjustment : {{diningBillDetails?.boarderDetails?.length}}
+                    </div>
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-center">SL</th>
+                                <th class="text-center">Boarder ID</th>
+                                <th class="text-center">Boarder Name</th>
+                                <th class="text-center">Boarder Type</th>
+                                <th class="text-center">Mobile</th>
+                                <th class="text-center">Total Meal</th>
+                                <th class="text-center">Total Bill</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of diningBillDetails?.boarderDetails; let i = index">
+                                <td class="text-center">{{ i + 1 }}</td>
+                                <td class="text-center">{{item?.boarderNo}}</td>
+                                <td>{{item?.boarderName}}</td>
+                                <td class="text-center">{{item?.boarderTypeName}}</td>
+                                <td class="text-center">{{item?.mobile}}</td>
+                                <td class="text-center">{{item?.totalMeal}}</td>
+                                <td class="text-right">{{item?.totalBill | currency: ' '}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="5" class="text-center">Total</th>
+                                <th class="text-center">{{diningBillDetails?.totalMeal}}</th>
+                                <th class="text-right">{{diningBillDetails?.totalBill | currency: " "}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <mat-toolbar color="primary">
+                        <mat-toolbar-row class="mat-toolbar-footer grid">
+                            <span class="title-center">
+                                <p>Created by {{diningBillDetails?.createdByName}} at
+                                    {{diningBillDetails?.createdDateString}}
+                                </p>
+                                <p *ngIf="diningBillDetails?.updatedByName != null">Updated By
+                                    {{diningBillDetails?.updatedByName}} at {{diningBillDetails?.updatedDateString}}</p>
+                            </span>
+                        </mat-toolbar-row>
+                    </mat-toolbar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

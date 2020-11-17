@@ -1,0 +1,149 @@
+<div id="scrolling" class="card mt-1">
+    <mat-card class="mat-medium-font app-page-title">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Finance</li>
+                <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Expense</li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i><a routerLink="/finance/diningExpense"
+                        class="navigation-link">Dining Expenses</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><i
+                        class="fas fa-square-full list_style_square"></i>Add Dining Expense</li>
+            </ol>
+        </nav>
+        <div class="">
+            <h5 class="font-material">Add Dining Expense</h5>
+        </div>
+    </mat-card>
+    <div class="card-body card-white-background">
+        <div class="col d-flex justify-content-center">
+            <form [formGroup]="diningExpenseForm" (ngSubmit)="onSubmit(formDirective)" #formDirective="ngForm"
+                novalidate class="example-form">
+                <input matInput hidden formControlName="id">
+                <mat-form-field *ngIf="commonMethod.showForInstituteAdmin()">
+                    <mat-label>Select Campus</mat-label>
+                    <select matNativeControl id="campusId" formControlName="campusId" class="input-full-width">
+                        <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                            {{item.campusName}}
+                        </option>
+                        <option [value]="0">
+                            For All
+                        </option>
+                    </select>
+                    <mat-error *ngIf="diningExpenseForm.get('campusId').hasError('required')">
+                        Campus name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput class="input-full-width" [matDatepicker]="dp" placeholder="Expense Date"
+                        formControlName="expenseDate">
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp></mat-datepicker>
+                    <mat-error *ngIf="diningExpenseForm.get('expenseDate').hasError('required')">
+                        Expense Date is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="input-full-width">
+                    <mat-label>Expense Head</mat-label>
+                    <select matNativeControl id="expenseHeadId" formControlName="expenseHeadId">
+                        <option value="" disabled selected></option>
+                        <option *ngFor="let item of diningExpenseAddData?.expenseHeads" [value]="item.id">
+                            {{item.name}}
+                        </option>
+                    </select>
+                    <mat-error *ngIf="diningExpenseForm.get('expenseHeadId').hasError('required')">
+                        Expense Head is<strong> required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <div class="row">
+                    <div class="col-sm-9" *ngIf="!diningExpenseForm.get('isStockProduct').value">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Enter Product Name" formControlName="productName">
+                            <mat-error *ngIf="diningExpenseForm.get('productName').hasError('required')">
+                                Product Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-9" *ngIf="diningExpenseForm.get('isStockProduct').value">
+                        <mat-form-field class="input-full-width">
+                            <mat-label>Select Product</mat-label>
+                            <select matNativeControl formControlName="productName">
+                                <option value="" disabled selected></option>
+                                <option [value]="item.id"
+                                    *ngFor="let item of diningExpenseAddData?.diningStockProducts">
+                                    {{commonMethod.getStockProductName(item)}}
+                                </option>
+                            </select>
+                            <mat-error *ngIf="diningExpenseForm.get('productName').hasError('required')">
+                                Product Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <section style="float: right;" class="example-section">
+                            <mat-slide-toggle color="green" formControlName="isStockProduct" class="example-margin">
+                                Stock Product
+                            </mat-slide-toggle>
+                        </section>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Quantity" formControlName="qty">
+                            <mat-error *ngIf="diningExpenseForm.get('qty').hasError('required')">
+                                Quantity is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field class="input-full-width">
+                            <mat-label>Select Unit</mat-label>
+                            <select matNativeControl formControlName="unit">
+                                <option value="" disabled selected></option>
+                                <option [value]="item" *ngFor="let item of units">
+                                    {{item}}
+                                </option>
+                                <option value="x">
+                                    Others
+                                </option>
+                            </select>
+                            <mat-error *ngIf="diningExpenseForm.get('unit').hasError('required')">
+                                Unit is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-form-field class="input-full-width" *ngIf="diningExpenseForm.get('unit').value == 'x'">
+                    <input matInput placeholder="Unit" formControlName="unitName">
+                    <mat-error *ngIf="diningExpenseForm.get('unitName').hasError('required')">
+                        Unit is <strong>required</strong>
+                    </mat-error>
+                    <mat-hint>Type your unit here</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="input-full-width">
+                    <input matInput placeholder="Rate" formControlName="rate">
+                    <mat-error *ngIf="diningExpenseForm.get('rate').hasError('required')">
+                        Rate is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="input-full-width">
+                    <input readonly matInput placeholder="Amount" formControlName="amount">
+                    <mat-error *ngIf="diningExpenseForm.get('amount').hasError('required')">
+                        Amount is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="input-full-width">
+                    <input matInput placeholder="Note" formControlName="note">
+                    <mat-error *ngIf="diningExpenseForm.get('note').hasError('required')">
+                        Note is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <button type="submit" mat-raised-button class="btn-custom mt-2 float-right"
+                    color="primary">Save</button>
+                <button type="button" routerLink="/finance/diningExpense" mat-raised-button
+                    class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

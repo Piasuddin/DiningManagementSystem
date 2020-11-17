@@ -1,0 +1,161 @@
+<div style="min-height: 100vh;">
+  <mat-card class="mat-medium-font app-page-title">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Finance</li>
+        <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i>Dining</li>
+        <li class="breadcrumb-item"><i class="fas fa-square-full list_style_square"></i><a
+            routerLink="/finance/diningMealManage" class="navigation-link">Meal Manages</a></li>
+        <li class="breadcrumb-item active" *ngIf="diningMealManageId == 0" aria-current="page"><i
+            class="fas fa-square-full list_style_square"></i>Add Meal Manage</li>
+        <li class="breadcrumb-item active" *ngIf="diningMealManageId > 0" aria-current="page">Update Meal Manage</li>
+      </ol>
+    </nav>
+    <div class="">
+      <h5 class="font-material" *ngIf="diningMealManageId == 0">Add Meal Manage</h5>
+      <h5 class="font-material" *ngIf="diningMealManageId > 0">Update Meal Manage</h5>
+    </div>
+  </mat-card>
+  <div class="card-body card-white-background">
+    <div class="row d-flex justify-content-center">
+      <div class="col-sm-7">
+        <form [formGroup]="diningMealmanageForm" novalidate>
+          <mat-form-field appearance="outline" *ngIf="commonMethod.showForInstituteAdmin()">
+            <mat-label>Select Campus</mat-label>
+            <select matNativeControl id="campusId" formControlName="campusId" class="input-full-width">
+              <option *ngFor="let item of commonMethod.campuses" [value]="item.id">
+                {{item.campusName}}
+              </option>
+            </select>
+            <mat-error *ngIf="diningMealmanageForm.get('campusId').hasError('required')">
+              Campus name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Valid From</mat-label>
+            <input matInput class="input-full-width" [matDatepicker]="dp" placeholder="Valid From"
+              formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+            <mat-error *ngIf="diningMealmanageForm.get('fromDate').hasError('required')">
+              Valid From is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Valid To</mat-label>
+            <input matInput class="input-full-width" #validTo [matDatepicker]="dp1" placeholder="Valid To"
+              formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+            <mat-datepicker #dp1></mat-datepicker>
+            <!-- <mat-error *ngIf="validTo != null && diningMealmanageForm.get('toDate').hasError('endDate')">
+              Valid To must be <strong>greater than</strong> Valid From
+            </mat-error> -->
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="col-sm-7">
+        <div class="form-group input-full-width">
+          <div class="input-group custom-group mb-3">
+            <input type="text" class="form-control" [(ngModel)]="boarderId" (change)='onChange()'
+              placeholder="Search by boarder id...">
+            <div class="input-group-append">
+              <button class="btn btn-custom-search" style="width: 160px;" (click)="onAdd()" type="button"
+                data-toggle="modal" data-target="#boarderAddModal">Add Boarder
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h6 class="text-danger text-center">{{errorMessage}}</h6>
+        </div>
+        <table class="table table-bordered table-striped table-hover dataTable no-footer" width="100%" cellspacing="0"
+          role="grid">
+          <thead>
+            <tr>
+              <th class="text-center" rowspan="1" colspan="1">SL</th>
+              <th class="text-center" rowspan="1" colspan="1">Boarder ID</th>
+              <th class="text-center" rowspan="1" colspan="1">Boarder Name</th>
+              <th class="text-center" rowspan="1" colspan="1">Boarder Type</th>
+              <th class="text-center" rowspan="1" colspan="1">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr role="row" class="odd" *ngFor="let boarder of lstAddedDininBoarders; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{boarder.boarderNo}}</td>
+              <td>{{boarder.boarderName}}</td>
+              <td>{{boarder.boarderTypeName}}</td>
+              <td class="text-center">
+                <button class="btn btn-delete btn-outline-danger" (click)="onDeleteBoarder(i)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <ul class="ul-no-style">
+            <li *ngFor="let item of diningMeals; let i = index;">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <span style="font-size: 18px; color: white;" class="badge badge-warning">{{item.mealName}}</span>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <mat-slide-toggle [checked]="item.isChecked" [(ngModel)]="item.isChecked"
+                    class="day-names example-margin">
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button type="button" (click)="onSubmit()" mat-raised-button class="btn-custom mt-2 float-right"
+          color="primary">Save</button>
+        <button type="button" routerLink="/finance/diningMealManage" mat-raised-button
+          class="btn-custom mr-2 mt-2 float-right" color="warn">Cancel</button>
+      </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" id="boarderAddModal" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h6 class="text-center mb-3">Boarder List</h6>
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">SL</th>
+                  <th class="text-center" scope="col">Boarder ID</th>
+                  <th class="text-center" scope="col">Boarder Name</th>
+                  <th class="text-center" scope="col">Boarder Type</th>
+                  <th class="text-center" scope="col">All <input type="checkbox" [(ngModel)]="allChecked"
+                      (click)="checkedAll()" /></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!(lstBoarder.length > 0)">
+                  <th colspan="6" class="text-center">No more boarder to add</th>
+                </tr>
+                <tr *ngFor="let boarder of lstBoarder; let i = index">
+                  <th class="text-center" scope="row">{{ i + 1 }}</th>
+                  <td class="text-center">{{boarder.boarderNo}}</td>
+                  <td>{{boarder.boarderName}}</td>
+                  <td>{{boarder.boarderTypeName}}</td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="boarder.isChecked" id='chk{{i}}' />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onClose()" data-dismiss="modal">Close</button>
+            <button type="button" [attr.data-dismiss]="true? 'modal': null" (click)="onBoarderAdd()"
+              class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

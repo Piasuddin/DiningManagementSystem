@@ -1,0 +1,227 @@
+<!-- test purpose -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport>
+    <!-- <span>MERP</span> -->
+    <button (click)="drawer.toggle()" mat-icon-button class="btn-side-nav-close"
+      aria-label="Example icon-button with menu icon">
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <!-- <div class="my-2" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+      <div class="with-bg"></div>
+      <div>
+        <a>
+          <img class="circle" src="./assets/images/profile.jpg" width="100">
+        </a>
+      </div>
+    </div>
+    <div style="background-color: #3e50b5 !important;" class="mt-2 py-3 text-white" fxLayout="column" fxLayoutAlign="center center"
+      fxLayoutGap="7px">
+      <div>
+        <a>
+          <span class="lead">Rexford</span>
+        </a>
+      </div>
+      <div>
+        <a>
+          <span class="">hello@khophi.co</span>
+        </a>
+      </div>
+    </div> -->
+    <div class="mt-3">
+      <mat-nav-list>
+        <a mat-list-item class="ml-2" style="font-size:15px;">
+
+        </a>
+      </mat-nav-list>
+      <ng-container *ngFor="let item of navigationObject">
+        <mat-accordion multi="true" [displayMode]="displayMode"
+          *ngIf="commonMethod.isShowModule(item.id) || item.id == 0">
+          <mat-expansion-panel class="no-shadow">
+            <mat-expansion-panel-header fxLayout="row" [expandedHeight]="expandHeight"
+              [collapsedHeight]="collapseHeight">
+              <mat-panel-title>
+                {{item.module}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let subModule of item.subModule">
+              <ng-container *ngIf="subModule.action.length > 0">
+                <mat-accordion *ngIf="commonMethod.isShowSubModuleInSideNav(subModule.action)" multi="true"
+                  [displayMode]="displayMode">
+                  <mat-expansion-panel class="no-shadow">
+                    <mat-expansion-panel-header style="height: 40px!important;" fxLayout="row"
+                      [expandedHeight]="expandHeight" [collapsedHeight]="collapseHeight">
+                      <mat-panel-title>
+                        {{subModule.name}}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-nav-list class="ml-0" dense>
+                      <ng-container *ngFor="let action of subModule.action">
+                        <mat-list-item *ngIf="(commonMethod.isShowSubModuleListItem(action.id)) || (commonMethod.showForSuperAdmin() || 
+                        commonMethod.showForInstituteAdmin() || commonMethod.showForCampusAdmin())">
+                          <a [routerLink]="action.link" class="side-nav-btn"
+                            (click)="drawer.toggle()">{{action.actionName}}</a>
+                        </mat-list-item>
+                      </ng-container>
+                    </mat-nav-list>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </ng-container>
+              <ng-container *ngIf="subModule.action.length == 0">
+                <mat-nav-list class="ml-0" dense
+                  *ngIf="commonMethod.isShowSubModuleListItem(subModule.id) || item.module == 'Home'">
+                  <mat-list-item>
+                    <a [routerLink]="subModule.link" class="side-nav-btn"
+                      (click)="drawer.toggle()">{{subModule.name}}</a>
+                  </mat-list-item>
+                </mat-nav-list>
+              </ng-container>
+            </ng-container>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar style="height: 50px; position: fixed; z-index: 104;" *ngIf="smallScreen && IsLoggedIn && user">
+      <div style="width: 17%;" class="logo-image">
+        <ng-container *ngIf="commonMethod.showForInstituteAdmin() && user">
+          <img class="logo-image" [src]="appHost.hostName+ 'images/InstituteImages/' + user.institueLogo" />
+        </ng-container>
+        <ng-container *ngIf="!commonMethod.showForSuperAdmin() && !commonMethod.showForInstituteAdmin() && user">
+          <img class="logo-image"
+            [src]="user.campusLogo? appHost.hostName+ 'images/CampusImages/' + user.campusLogo: ''" />
+        </ng-container>
+      </div>
+      <div style="width: 83%; line-height: 20px; padding-left: 5px;">
+        <div style="font-size: 20px; font-weight: bold;">
+          <div style="padding-top:5px;">
+            <span *ngIf="!commonMethod.showForSuperAdmin()">
+              {{user.instituteName}}
+            </span>
+          </div>
+        </div>
+        <div style="font-size: 12px;">
+          <div style="padding-top:5px;">
+            <span *ngIf="!commonMethod.showForSuperAdmin() && !commonMethod.showForInstituteAdmin()">
+              {{user.campusName}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-toolbar>
+    <mat-toolbar *ngIf="IsLoggedIn && user" id="header" style="margin: 0px!important; position: fixed; z-index: 105;"
+      class="header-shadow">
+      <div class="nav-container row d-flex justify-content-between">
+        <div style="width: 25%; margin: auto;" *ngIf="!smallScreen">
+          <button (click)="onMenu(drawer)" mat-icon-button class="slide_toggle_main_menu example-icon"
+            aria-label="Example icon-button with menu icon">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span style="position: relative; top: 3px;">MERP</span>
+        </div>
+        <div style="width: 25%;" *ngIf="smallScreen">
+          <button (click)="onMenu(drawer)" mat-icon-button class="slide_toggle_main_menu example-icon"
+            aria-label="Example icon-button with menu icon">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span style="position: relative; top: 3px;">MERP</span>
+        </div>
+        <div *ngIf="!smallScreen" style="width: 10%;" class="logo-image">
+          <ng-container *ngIf="commonMethod.showForInstituteAdmin() && user">
+            <img *ngIf="IsLoggedIn" class="logo-image"
+              [src]="appHost.hostName+ 'images/InstituteImages/' + user.institueLogo" />
+          </ng-container>
+          <ng-container *ngIf="!commonMethod.showForSuperAdmin() && !commonMethod.showForInstituteAdmin() && user">
+            <img *ngIf="IsLoggedIn" class="logo-image"
+              [src]="user.campusLogo? appHost.hostName+ 'images/CampusImages/' + user.campusLogo: ''" />
+          </ng-container>
+        </div>
+        <div *ngIf="!smallScreen" style="width: 44%; line-height: 20px;">
+          <div *ngIf="IsLoggedIn" style="font-size: 20px; font-weight: bold;">
+            <div style="padding-top:5px;">
+              <span *ngIf="!commonMethod.showForSuperAdmin()">
+                {{user.instituteName}}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="IsLoggedIn" style="font-size: 12px;">
+            <div style="padding-top:5px;">
+              <span *ngIf="!commonMethod.showForSuperAdmin() && !commonMethod.showForInstituteAdmin()">
+                {{user.campusName}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div [style.width]="logoSize" id="userNotifySms">
+          <button mat-icon-button class="example-icon float-right" routerLink="/login" *ngIf="!IsLoggedIn"
+            aria-label="Example icon-button with share icon">
+            <mat-icon style="font-size: 40px">account_circle</mat-icon>
+          </button>
+          <button class="header-profile-btn float-right" [matMenuTriggerFor]="beforeMenu"
+            *ngIf="IsLoggedIn && commonMethod.showForSuperAdmin()">
+            <img class="header-image" src="/assets/images/noimage_person.png" />
+          </button>
+          <button class="header-profile-btn float-right" [matMenuTriggerFor]="beforeMenu" *ngIf="IsLoggedIn">
+            <img class="header-image" *ngIf="user.profilePicture"
+              [src]="appHost.hostName+ 'images/UserImages/' + user.profilePicture" />
+          </button>
+          <button mat-icon-button class="example-icon float-right" aria-label="Example icon-button with share icon">
+            <mat-icon matBadge="1" matBadgeColor="warn">email</mat-icon>
+          </button>
+          <div class="btn-group" style="float: right;">
+            <button type="button" mat-icon-button style="background: none;" class="btn example-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-icons">
+                language
+              </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right langulage-dropdown">
+              <button class="dropdown-item" (click)="onLanSelect('en')" type="button">EN</button>
+              <button class="dropdown-item" (click)="onLanSelect('ar')" type="button">ARA</button>
+              <button class="dropdown-item" (click)="onLanSelect('bn')" type="button">BNG</button>
+            </div>
+          </div>
+          <!-- <button mat-icon-button class="example-icon favorite-icon float-right"
+            aria-label="Example icon-button with heart icon">
+            <span class="material-icons">
+              language
+            </span>
+          </button> -->
+          <mat-menu #beforeMenu="matMenu" xPosition="before">
+            <div class="d-flex justify-content-center" *ngIf="commonMethod.showForSuperAdmin()">
+              <img class="header-image-pf" src="/assets/images/noimage_person.png" />
+            </div>
+            <div class="d-flex justify-content-center" *ngIf="user.profilePicture">
+              <img class="header-image-pf" [src]="appHost.hostName+ 'images/UserImages/' + user.profilePicture" />
+            </div>
+            <h6 class="text-center">{{user?.userTypeName}}</h6>
+            <mat-divider></mat-divider>
+            <div class="d-flex justify-content-center mt-1 mb-1">
+              <button mat-stroked-button style="width: 200px; border-radius: 50px;"
+                routerLink="/administration/changePassword">Reset Password</button>
+            </div>
+            <mat-divider></mat-divider>
+            <div style="height: 150px;" class="d-flex justify-content-center mt-1">
+
+            </div>
+            <mat-divider></mat-divider>
+            <div class="d-flex justify-content-center mt-1">
+              <button mat-stroked-button (click)="onLogout()">Logout</button>
+            </div>
+          </mat-menu>
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <div *ngIf="IsLoggedIn && info.userTypes[0] && !smallScreen">
+      <app-navmenu></app-navmenu>
+    </div>
+    <div class="app-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+<mat-toolbar style="margin: 0px!important; background: #024731!important; color: #fff; 
+font-size: 14px; height: 46px;" class="text-center d-flex justify-content-center">
+  <span>{{'footer.copyright' | translate}}</span>
+</mat-toolbar>
